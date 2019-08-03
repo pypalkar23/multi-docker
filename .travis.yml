@@ -18,5 +18,5 @@ after_success:
   #Take those images and push them to docker hub
   - docker push pypalkar23/multi-client
   - docker push pypalkar23/multi-nginx
-  - docker push pypalkar23/multi-server
-  - docker push pypalkar23/multi-worker
+  #- docker push pypalkar23/multi-server
+  #- docker push pypalkar23/multi-worker
