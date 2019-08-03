@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build - t pypalkar23/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true pypalkar23/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t pypalkar23/multi-client ./client
+  - docker build -t pypalkar23/multi-nginx ./nginx
+  - docker build -t pypalkar23/multi-server ./server
+  - docker build -t pypalkar23/multi-worker ./worker
+  #Login to docker-cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #Take those images and push them to docker hub
+  - docker push pypalkar23/multi-client
+  - docker push pypalkar23/multi-nginx
+  - docker push pypalkar23/multi-server
+  - docker push pypalkar23/multi-worker
